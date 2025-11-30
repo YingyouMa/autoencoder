@@ -5,6 +5,13 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import time
 
+
+# from 1
+# kernal_size:      3 -> 6
+# padding:          1 -> 2
+# output_padding:   1 -> 0
+
+
 '''
 input data is a numpy array with shape (10,5,1000,2,128,128):
 10: 10 repeated trajectories with the same parameter but different initial conditions
@@ -54,7 +61,7 @@ class QFieldAutoencoder(nn.Module):
         prev_channels = in_channels
         for fs in filter_sizes:
             enc_layers.append(
-                nn.Conv2d(prev_channels, fs, kernel_size=3, stride=stride, padding=1)
+                nn.Conv2d(prev_channels, fs, kernel_size=6, stride=stride, padding=2)
             )
             enc_layers.append(nn.ReLU(True))
             prev_channels = fs
@@ -83,10 +90,10 @@ class QFieldAutoencoder(nn.Module):
                 nn.ConvTranspose2d(
                     reversed_sizes[i],
                     reversed_sizes[i+1],
-                    kernel_size=3,
+                    kernel_size=6,
                     stride=stride,
-                    padding=1,
-                    output_padding=1,
+                    padding=2,
+                    output_padding=0,
                 )
             )
             dec_layers.append(nn.ReLU(True))
@@ -96,10 +103,10 @@ class QFieldAutoencoder(nn.Module):
             nn.ConvTranspose2d(
                 reversed_sizes[-1],
                 in_channels,
-                kernel_size=3,
+                kernel_size=6,
                 stride=stride,
-                padding=1,
-                output_padding=1,
+                padding=2,
+                output_padding=0,
             )
         )
         dec_layers.append(nn.Tanh())  # keep output in [-1,1]
@@ -159,7 +166,7 @@ def train_autoencoder(qfield_data, epochs=20, batch_size=32, lr=1e-3, latent_dim
     return model
 
 start = time.time()
-data_q = np.load("data/nematic_data.npy")[:,:1]
+data_q = np.load("../../data/nematic_data.npy")[:,:1]
 print(time.time()-start)
 start = time.time()
 data_q = data_q.astype(np.float16)

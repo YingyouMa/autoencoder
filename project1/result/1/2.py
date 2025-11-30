@@ -5,6 +5,10 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import time
 
+
+# from 1
+# epoch: 50 -> 150
+
 '''
 input data is a numpy array with shape (10,5,1000,2,128,128):
 10: 10 repeated trajectories with the same parameter but different initial conditions
@@ -159,7 +163,7 @@ def train_autoencoder(qfield_data, epochs=20, batch_size=32, lr=1e-3, latent_dim
     return model
 
 start = time.time()
-data_q = np.load("data/nematic_data.npy")[:,:1]
+data_q = np.load("../../data/nematic_data.npy")[:,:1]
 print(time.time()-start)
 start = time.time()
 data_q = data_q.astype(np.float16)
@@ -170,7 +174,7 @@ data_train = data_q[:8]
 filter_sizes = [16, 32, 64, 128]
 stride = 2
 
-model = train_autoencoder(data_train, epochs=50, batch_size=64, lr=1e-3, latent_dim=128, 
+model = train_autoencoder(data_train, epochs=150, batch_size=64, lr=1e-3, latent_dim=128, 
                           filter_sizes=filter_sizes, stride=stride)
 
 

@@ -5,6 +5,9 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import time
 
+# from 1
+# epoch: 50 -> 150
+
 '''
 input data is a numpy array with shape (10,5,1000,2,128,128):
 10: 10 repeated trajectories with the same parameter but different initial conditions
@@ -170,7 +173,7 @@ data_train = data_q[:8]
 filter_sizes = [16, 32, 64, 128]
 stride = 2
 
-model = train_autoencoder(data_train, epochs=50, batch_size=64, lr=1e-3, latent_dim=128, 
+model = train_autoencoder(data_train, epochs=150, batch_size=64, lr=1e-3, latent_dim=128, 
                           filter_sizes=filter_sizes, stride=stride)
 
 
@@ -189,11 +192,9 @@ data_test = data_test.cpu().numpy()
 data_recon = data_recon.cpu().numpy()
 
 plt.figure()
-plt.imshow(data_test[0,0], vmin=-1, vmax=1)
-plt.colorbar()
+plt.imshow(data_test[0,0])
 plt.figure()
-plt.imshow(data_recon[0,0], vmin=-1, vmax=1)
-plt.colorbar()
+plt.imshow(data_recon[0,0])
 
 
 # # extract latent representations

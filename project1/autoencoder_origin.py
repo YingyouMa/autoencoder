@@ -159,7 +159,7 @@ def train_autoencoder(qfield_data, epochs=20, batch_size=32, lr=1e-3, latent_dim
     return model
 
 start = time.time()
-data_q = np.load("data/nematic_data.npy")[:,:1]
+data_q = np.load("../../data/nematic_data.npy")[:,:1]
 print(time.time()-start)
 start = time.time()
 data_q = data_q.astype(np.float16)
